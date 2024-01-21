@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"html"
+	"log"
+	"net/http"
+)
+
+func pingHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+}
 
 func main() {
-	fmt.Println("hello world")
+	http.HandleFunc("/ping", pingHandler)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
